@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+in vec2 aTexCoord;
+out vec2 vTexCoord;
+
+void main()
+{
+    vTexCoord = aTexCoord;
+    gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+
+precision mediump float;
+
+in vec2 vTexCoord;
+uniform sampler2D uTextureMap1;
+uniform sampler2D uTextureMap2;
+
+out vec4 fColor;
+
+uniform bool flagHead;
+uniform bool flagBody;
+uniform bool flagTrunk;
+uniform bool flagLeaves;
+
+void main()
+{
+    if(flagHead){
+        fColor = texture(uTextureMap1, vTexCoord);
+    } else if(flagBody){
+        fColor = texture(uTextureMap2, vTexCoord);
+    } else if(flagTrunk){
+        fColor = vec4(0.59, 0.29, 0.0, 1.0);
+    } else if(flagLeaves){
+        fColor = vec4(0.15, 0.56, 0.15, 1.0);
+    } else {
+        fColor = vec4(0.09, 0.65, 0.09, 1.0);
+    }
+}
+</script>
+
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Homework2.js"></script>
+<img id = "texImage1" src = "muso.jpg" hidden></img>
+<img id = "texImage2" src = "pelo.jpg" hidden></img>
+
+<body>
+<button id = "Button1">Start/Stop</button>
+<button id = "Button2">Increas theta</button>
+<button id = "Button3">Decrease theta</button>
+<button id = "Button4">Increas phi</button>
+<button id = "Button5">Decrease phi</button>
+<canvas id="gl-canvas" width="1024" height="1024">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
